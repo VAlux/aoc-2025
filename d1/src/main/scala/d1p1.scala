@@ -3,8 +3,7 @@ import scala.annotation.tailrec
 object d1p1 extends Solution[Int]:
   override def solve(input: List[String]): Int =
     val rotations = parseRotations(input)
-    val results = rotateAll(rotations = rotations)
-//    println(results.mkString("\n"))
+    val results   = rotateAll(rotations = rotations)
     results.count(_ == 0)
 
   enum Direction:
