@@ -1,11 +1,11 @@
 import d1p1.*
+
 import scala.annotation.tailrec
 
 object d1p2 extends Solution[Int]:
   override def solve(input: List[String]): Int =
     val rotations = parseRotations(input)
     val results   = rotateAll(rotations = rotations)
-    println(results.mkString("\n"))
     results.map(_.zeros).sum
 
   case class DialState(current: Int, zerosDuringRotation: Int = 0):
@@ -18,17 +18,23 @@ object d1p2 extends Solution[Int]:
       val newValue = rotate(current = current, rotation = rotations.head)
       rotateAll(newValue.current, rotations.tail, acc :+ newValue)
 
+  private def calculateDialState(fullRotations: Int, crossesZeroDuringRemainder: Boolean, newValue: Int): DialState =
+    val totalZeros          = fullRotations + (if crossesZeroDuringRemainder then 1 else 0)
+    val zerosDuringRotation = totalZeros - (if newValue == 0 then 1 else 0)
+
+    DialState(newValue, zerosDuringRotation)
+
   def rotate(current: Int, rotation: Rotation): DialState =
-    val fullRotations: Int = rotation.points / 100
+    val fullRotations = rotation.points / dialDimension
+    val remainder     = rotation.points % dialDimension
 
     rotation.direction match
       case Direction.Left  =>
-        val clicks   = current - (rotation.points % 100)
-        val newValue = if clicks < 0 then 100 + clicks else clicks
-        val zeros    = if rotation.points > current && current != 0 then fullRotations + 1 else fullRotations
-
-        DialState(newValue, zeros)
+        val clicks                     = current - remainder
+        val newValue                   = if clicks < 0 then dialDimension + clicks else clicks
+        val crossesZeroDuringRemainder = current > 0 && remainder >= current
+        calculateDialState(fullRotations, crossesZeroDuringRemainder, newValue)
       case Direction.Right =>
-        val newValue = (current + rotation.points) % 100
-        val zeros    = if rotation.points > (100 - current) && current != 0 then fullRotations + 1 else fullRotations
-        DialState(newValue, zeros)
+        val newValue                   = (current + rotation.points) % dialDimension
+        val crossesZeroDuringRemainder = current > 0 && remainder >= (dialDimension - current)
+        calculateDialState(fullRotations, crossesZeroDuringRemainder, newValue)

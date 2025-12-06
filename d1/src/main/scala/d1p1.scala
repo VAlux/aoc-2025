@@ -1,6 +1,9 @@
 import scala.annotation.tailrec
 
 object d1p1 extends Solution[Int]:
+  private val dialMax: Int = 99
+  val dialDimension: Int   = dialMax + 1
+
   override def solve(input: List[String]): Int =
     val rotations = parseRotations(input)
     val results   = rotateAll(rotations = rotations)
@@ -35,6 +38,6 @@ object d1p1 extends Solution[Int]:
   def rotate(current: Int, rotation: Rotation): Int =
     rotation.direction match
       case Direction.Left  =>
-        val value = current - (rotation.points % 100)
-        if value < 0 then 100 + value else value
-      case Direction.Right => (current + rotation.points) % 100
+        val value = current - (rotation.points % dialDimension)
+        if value < 0 then dialDimension + value else value
+      case Direction.Right => (current + rotation.points) % dialDimension
