@@ -5,9 +5,7 @@ import scala.annotation.tailrec
 object d2p2 extends Solution[Long]:
 
   def expandRange(range: Range): List[Id] =
-    (range.from to range.to)
-      .map(_.toString)
-      .toList
+    (range.from to range.to).map(_.toString).toList
 
   def checkId(id: Id): Boolean =
     def checkBreakpoints(breakPoints: List[Int]): Boolean =

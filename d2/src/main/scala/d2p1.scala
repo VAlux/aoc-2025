@@ -15,10 +15,7 @@ object d2p1 extends Solution[Long]:
     input.split(",").flatMap(parseRange).toList
 
   def expandRange(range: Range): List[Id] =
-    (range.from to range.to)
-      .map(_.toString)
-      .filter(number => number.length % 2 == 0)
-      .toList
+    (range.from to range.to).map(_.toString).filter(number => number.length % 2 == 0).toList
 
   def checkId(id: Id): Boolean =
     @tailrec
