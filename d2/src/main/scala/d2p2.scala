@@ -10,19 +10,19 @@ object d2p2 extends Solution[Long]:
       .toList
 
   def checkId(id: Id): Boolean =
-    def check(indexes: List[Int]): Boolean =
-      indexes.map(index => id.substring(index, index + id.length / indexes.size)).toSet.size == 1
+    def checkBreakpoints(breakPoints: List[Int]): Boolean =
+      breakPoints.map(index => id.substring(index, index + id.length / breakPoints.size)).toSet.size == 1
 
-    if id.length == 1 then false
-    else if id.toSet.size == 1 then true
-    else if id.length > 3 then
-      val indexes = (2 to id.length / 2)
+    if id.length == 1 then false         // single digit is valid
+    else if id.toSet.size == 1 then true // there are more then 1 digit and all of them are the same
+    else if id.length <= 3 then false // no need to check this case, can't be invalid by definition
+    else
+      val breakPoints = (2 to id.length / 2)
         .filter(step => id.length % step == 0)
         .map(step => (0 until id.length by step).toList)
         .toList
 
-      indexes.exists(check)
-    else false
+      breakPoints.exists(checkBreakpoints)
 
   override def solve(input: List[String]): Long =
     val ranges     = parseRanges(input.head)

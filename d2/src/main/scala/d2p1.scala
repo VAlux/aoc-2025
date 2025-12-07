@@ -17,7 +17,7 @@ object d2p1 extends Solution[Long]:
   def expandRange(range: Range): List[Id] =
     (range.from to range.to)
       .map(_.toString)
-      .filter(number => !number.startsWith("0") && number.length % 2 == 0)
+      .filter(number => number.length % 2 == 0)
       .toList
 
   def checkId(id: Id): Boolean =
