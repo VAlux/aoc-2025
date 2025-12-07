@@ -4,7 +4,7 @@ object d2p1 extends Solution[Long]:
 
   case class Range(from: Long, to: Long)
 
-  opaque type Id = String
+  type Id = String
 
   def parseRanges(input: String): List[Range] =
     def parseRange(rangeContent: String): Option[Range] =
@@ -20,7 +20,6 @@ object d2p1 extends Solution[Long]:
       .filter(number => !number.startsWith("0") && number.length % 2 == 0)
       .toList
 
-
   def checkId(id: Id): Boolean =
     @tailrec
     def check(leftIndex: Int, rightIndex: Int): Boolean =
@@ -30,9 +29,8 @@ object d2p1 extends Solution[Long]:
 
     check(0, id.length / 2)
 
-
   override def solve(input: List[String]): Long =
-    val ranges = parseRanges(input.head)
-    val ids = ranges.flatMap(expandRange)
+    val ranges     = parseRanges(input.head)
+    val ids        = ranges.flatMap(expandRange)
     val invalidIds = ids.filter(id => checkId(id))
     invalidIds.map(_.toLong).sum
