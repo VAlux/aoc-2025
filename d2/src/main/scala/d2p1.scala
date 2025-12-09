@@ -27,7 +27,4 @@ object d2p1 extends Solution[Long]:
     check(0, id.length / 2)
 
   override def solve(input: List[String]): Long =
-    val ranges     = parseRanges(input.head)
-    val ids        = ranges.flatMap(expandRange)
-    val invalidIds = ids.filter(id => checkId(id))
-    invalidIds.map(_.toLong).sum
+    parseRanges(input.head).flatMap(expandRange).filter(id => checkId(id)).map(_.toLong).sum
