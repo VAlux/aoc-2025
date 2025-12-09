@@ -23,4 +23,4 @@ object d2p2 extends Solution[Long]:
       breakPoints.exists(checkBreakpoints)
 
   override def solve(input: List[String]): Long =
-    parseRanges(input.head).flatMap(expandRange).filter(id => checkId(id)).map(_.toLong).sum
+    parseRanges(input.head).flatMap(expandRange).filter(checkId).map(_.toLong).sum
